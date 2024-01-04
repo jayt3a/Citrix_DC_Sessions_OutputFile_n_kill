@@ -1,0 +1,36 @@
+# Get disconnected sessions that meet the specified conditions
+$disconnectedSessions = Get-BrokerSession -MaxRecordCount 2000 | Where-Object { 
+    $_.SessionState -eq "Disconnected"}
+
+# Specify the output file path
+$outputFilePath = "C:\users\jtran\desktop\dcusers.txt"
+
+# Iterate through each disconnected session
+foreach ($session in $disconnectedSessions) {
+    # Collect session information
+    $sessionInfo = @{
+        UserName         = $session.UserName
+        MachineName      = $session.MachineName
+        EstablishmentTime = $session.EstablishmentTime
+        ReceiverName      = $session.ReceiverName
+        IdleDuration      = $session.IdleDuration
+        IdleSince         = $session.IdleSince
+    }
+
+    # Convert the session information to a formatted string
+    $sessionInfoString = "UserName: $($sessionInfo.UserName)`r`n" +
+                         "MachineName: $($sessionInfo.MachineName)`r`n" +
+                         "EstablishmentTime: $($sessionInfo.EstablishmentTime)`r`n" +
+                         "ReceiverName: $($sessionInfo.ReceiverName)`r`n" +
+                         "IdleDuration: $($sessionInfo.IdleDuration)`r`n" +
+                         "IdleSince: $($sessionInfo.IdleSince)`r`n" +
+                         "--------------------------------------------`r`n"
+
+    # Append the session information to the output file
+    Add-Content -Path C:\Users\JTran\dcuserstest.txt -Value $sessionInfoString
+}
+
+
+
+# Terminate the disconnected sessions
+$disconnectedSessions | Stop-BrokerSession
