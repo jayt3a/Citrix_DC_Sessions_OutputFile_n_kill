@@ -27,7 +27,7 @@ foreach ($session in $disconnectedSessions) {
                          "--------------------------------------------`r`n"
 
     # Append the session information to the output file
-    Add-Content -Path C:\Users\JTran\dcuserstest.txt -Value $sessionInfoString
+    Set-Content -Path C:\users\jtran\desktop\dcusers.txt -Value $sessionInfoString
 }
 
 
